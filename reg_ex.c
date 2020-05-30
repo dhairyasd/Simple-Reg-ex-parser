@@ -8,8 +8,31 @@ bool match( char *a, char *b)
     switch(*b)
     {
         case '.':
-            if(*(a+1) != '\0') a++;
-            return isMatch(a,b+1);
+            if(*a == '\0')
+            {
+                if(*(b+1) == '*')
+                    return isMatch(a, b+2);
+                else
+                    return false;
+            }
+            else
+            {
+                if(*(b+1) == '\0')
+                {
+                    if(*(a+1) == '\0')
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                {
+                    if(*(b+1) == '*')
+                        return isMatch(a, b+1);
+                    else
+                        return isMatch(a+1, b+1);
+                } // end-of if(*(b+1) == '\0')
+                
+            } // end-of if(*a == '\0')
         break;
         case '*':
             if(isMatch(a,b+1) == true)
@@ -18,6 +41,8 @@ bool match( char *a, char *b)
             {
                 if( (*(b-1) != '.') && ( *a != *(b-1) ) )
                     return false;
+                if(*(b+1) == '\0')
+                    return true;
                 return isMatch(a+1, b+1);
             }
         break;
@@ -39,11 +64,11 @@ bool match( char *a, char *b)
                     }
                     else
                         return false;
-                }   //end-of if(*a == *b)
+                }   // end-of if(*a == *b)
                 
             }   // end-of if(*a == '\0')
             
-    }   //end-of switch
+    }   // end-of switch
 }
 
 
@@ -77,8 +102,8 @@ bool isMatch(char * s, char * p){
 
 int main()
 {
-    char s[] = "aa";
-    char p[] = "a";
+    char s[] = "ab";
+    char p[] = ".*";
     bool result = isMatch(s, p);
     printf("\n\tThe func output is : ");
     if(result)
