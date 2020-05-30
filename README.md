@@ -23,7 +23,7 @@ The `isMatch` function takes 2 input strings as its arguments. These are namely 
 `False` : if it doesn't match. 
 Enter the sample text and the format string into the strings in the main function and build the program.
 
-The rest is self-explanatory
+The rest is self-explanatory :grin:
 
 
 ## Contributing
