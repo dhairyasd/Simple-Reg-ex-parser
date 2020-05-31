@@ -2,87 +2,42 @@
 #include <stdbool.h>
 
 bool isMatch(char * s, char * p);
+bool zeroOrMore(char * a, char * b);
 
-bool match( char *a, char *b)
+
+bool zeroOrMore(char * a, char * b)
 {
-    switch(*b)
+    char * iter = a;
+    if(*b == '.')
     {
-        case '.':
-            if(*a == '\0')
-            {
-                if(*(b+1) == '*')
-                    return isMatch(a, b+2);
-                else
-                    return false;
-            }
-            else
-            {
-                if(*(b+1) == '\0')
-                {
-                    if(*(a+1) == '\0')
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                {
-                    if(*(b+1) == '*')
-                        return isMatch(a, b+1);
-                    else
-                        return isMatch(a+1, b+1);
-                } // end-of if(*(b+1) == '\0')
-                
-            } // end-of if(*a == '\0')
-        break;
-        case '*':
-            if(isMatch(a,b+1) == true)
+        for( ; *iter != '\0' ; iter++)
+            if(isMatch(iter, b+2))
                 return true;
-            else
-            {
-                if( (*(b-1) != '.') && ( *a != *(b-1) ) )
-                    return false;
-                if(*(b+1) == '\0')
-                    return true;
-                return isMatch(a+1, b+1);
-            }
-        break;
-        default:
-            if(*a == '\0')
-            {
-                if(isMatch(a, b+1))
-                {
-                    if(*(b+1) == '*')
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                    return false;
-            }
-            else
-            {
-                if(*a == *b)
-                    return isMatch(a+1, b+1);
-                else
-                {
-                    if(isMatch(a, b+1))
-                    {
-                        if(*(b+1) == '*')
-                            return true;
-                        else
-                            return false;
-                    }
-                    else
-                        return false;
-                }   //end-of if(*a == *b)
-                
-            }   // end-of if(*a == '\0')
-            
-    }   //end-of switch
+    }
+    else
+    {
+        for( ; *iter == *b ; iter++)
+            if(isMatch(iter, b+2))
+                return true;
+    }
+    return isMatch(iter, b+2);
 }
 
 
 
+
+bool match( char *a, char *b)
+{
+    if(*(b+1) == '*')
+        return zeroOrMore(a,b);
+    if(*b == '.' || *b == *a)
+    {
+        if(*a == '\0') return false;
+        return isMatch(a+1, b+1);
+    }
+    else
+        return false;
+}
 
 
 
@@ -101,7 +56,6 @@ bool isMatch(char * s, char * p){
     {
         return match(a, b);
     }
-
 }
 
 
@@ -113,8 +67,8 @@ bool isMatch(char * s, char * p){
 
 int main()
 {
-    char s[] = "ab";
-    char p[] = ".*";
+    char s[] = "aabcbcbcaccbcaabc";
+    char p[] = ".*a*aa*.*b*.c*.*a*";
     bool result = isMatch(s, p);
     printf("\n\tThe func output is : ");
     if(result)
