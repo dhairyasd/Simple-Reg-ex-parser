@@ -48,7 +48,17 @@ bool match( char *a, char *b)
         break;
         default:
             if(*a == '\0')
-                return  isMatch(a, b+1);
+            {
+                if(isMatch(a, b+1))
+                {
+                    if(*(b+1) == '*')
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
             else
             {
                 if(*a == *b)
@@ -64,12 +74,13 @@ bool match( char *a, char *b)
                     }
                     else
                         return false;
-                }   // end-of if(*a == *b)
+                }   //end-of if(*a == *b)
                 
             }   // end-of if(*a == '\0')
             
-    }   // end-of switch
+    }   //end-of switch
 }
+
 
 
 
